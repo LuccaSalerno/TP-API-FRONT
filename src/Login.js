@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 //Dentro de la función puedo hacer lógica
 
@@ -11,12 +10,13 @@ import { Redirect } from 'react-router-dom';
 //Registrarse
 function LoginComponente(){
 
+  const navigate = useNavigate();
+
     //Control para cambiar de pantalla
     const [logeado, setLogeado] = useState(false);
 
     //Persona
-    const [persona, crearPersona] = useState({nombre:'', password:'', documento:''});
-
+    const [persona, setPersona] = useState({nombre:'', password:'', documento:''});
 
     //Llama al metodo buscarPersona del PerosnaController es de tipo GET
     const buscarPersona = async () => {
@@ -65,7 +65,7 @@ function LoginComponente(){
 
     //Guarda a la persona con sus datos
     const manejarCambioEntrada = (e) => {
-        crearPersona({ ...persona, [e.target.name]: e.target.value });
+        setPersona({ ...persona, [e.target.name]: e.target.value });
     };
 
     //Verifica que al menos que se ingresó algo en el "docmuento"
@@ -73,7 +73,7 @@ function LoginComponente(){
       //const nombre = document.getElementById('nombre').value;
       //const contrasenia = document.getElementById('password').value;
       const documento = document.getElementById('documento').value;
-      if (documento != ''){
+      if (documento !== ''){
         return true
       }
       else{
@@ -85,7 +85,7 @@ function LoginComponente(){
       if (verificarInputs() === true){
         const resultadoBusqueda = await buscarPersona();
         console.log(resultadoBusqueda);  // true o false
-        if (resultadoBusqueda == false){
+        if (resultadoBusqueda === false){
             manejarRegistro();
             alert('Registrado con éxito. Puede iniciar sesión')
         }
@@ -102,10 +102,11 @@ function LoginComponente(){
         if (verificarInputs() === true){
             const resultadoBusqueda = await buscarPersona();
             console.log(resultadoBusqueda);  // true o false
-            if (resultadoBusqueda == true){
+            if (resultadoBusqueda === true){
                 alert('Entraste a la plataforma')
                 //Permiso para poder ir a la siguiente pantalla
                 setLogeado(true);
+                navigate('/inicio', { state: { persona: persona } });
              }
              else{
                 alert('No existe el usuario. Registrese')
@@ -132,11 +133,9 @@ function LoginComponente(){
                 </form>
             </div>
           ) : (
-            // Si el usuario está autenticado, pasamos la información de persona a InicioComponente
-            <Redirect to={{
-              pathname: "/inicio",
-              state: { persona: persona }
-            }} />
+
+            null
+            
           )};  
             
         </div>

@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
 import './Reclamo.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useHistory} from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 
-function InicioComponente(props){
 
-  const persona = props.location.state.persona;
+function InicioComponente(){
+  
+  
+  //Hacer un reclamo: Atributos necesarios:
+  //- usuario
+  //- edificio
+  //- ubicacion
+  //- descripcion
+  //- unidad
+  //- imagenes (ver)
 
+  //Se requiere que el ingreso sea mínimo y cerrado. 
+  const location = useLocation();
+  const persona = location.state && location.state.persona;
+  
+  const [edificio, setEdificio] = useState({codigo:''});
+  var ubicacion;
+  var descripcion;
+  const [unidad, setUnidad] = useState({codigo:'', piso:'', numero:''});
 
-  const history = useHistory();
-
-  const [edificio, crearEdificio] = useState({codigo:''});
 
   const manejarCambioEntrada = (e) => {
-    crearEdificio({ ...edificio, [e.target.name]: e.target.value });
+    setEdificio({ ...edificio, [e.target.name]: e.target.value });
   };
 
   const buscarEdificio = async () => {
@@ -27,20 +39,21 @@ function InicioComponente(props){
         const edificioEncontrado = await respuesta.json();
         if (edificioEncontrado) {
           console.log('Edificio existe');
-          return true;  // Devuelve true si la persona se encontró
+          return true; 
         } else {
           console.log('Edificio no existe');
-          return false;  // Devuelve false si la persona no se encontró
+          return false;
         }
       } else {
-        console.log('NO ESTA');
-        return false;  // Devuelve false si hubo un problema con la solicitud
+        console.log('Respuesta no existosa');
+        return false; 
       }
     } catch (error) {
       console.log('Error al buscar el edificio o no se encuentra registrado');
-      return false;  // Devuelve false si hubo un error en la solicitud
+      return false; 
     }
   };
+
 
 
   return(
@@ -52,7 +65,8 @@ function InicioComponente(props){
           <form>
             
             <input className='globo' type='number' placeholder="Codigo del Edificio" name="codigo" id='codigo' value={edificio.codigo} onChange={manejarCambioEntrada} required/>
-                
+            <input className='globo' />
+              
             <button className='globo-boton' type='submit' onClick={() => buscarEdificio()}> Enviar Reclamo </button>
         
           </form>
@@ -65,6 +79,8 @@ function InicioComponente(props){
 
 
   )
+  
+
 };
 
 export default InicioComponente;
