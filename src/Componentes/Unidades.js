@@ -1,17 +1,42 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
 
-function Edificios(){
+function Unidades(){
 
-    const [edificios, setEdificios] = useState([]);
+    const params = useParams();
+
+    const [edificio, setEdificio] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/edificios";
-        fetch(url).then(res => res.json()).then(res => setEdificios(res));
+        const url = "http://localhost:8080/edificios/" + params.id;
+        fetch(url)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res.message);
+                if(res.hasOwnProperty('error')){
+                    alert(res.message);
+                    window.location.replace("http://localhost:3000/edificios");
+                } else {
+                    setEdificio(res);
+                }
+            });
     },[]);
 
+
+    const [unidades, setUnidades] = useState([]);
+    useEffect(() => {
+        const url = "http://localhost:8080/edificios/" + params.id + "/unidades";
+        fetch(url).then(res => res.json()).
+            then(res => {
+                setUnidades(res);
+            });
+    },[]);
+
+
+
     const [form , setForm] = useState({
-        nombre: '',
-        direccion: ''
+        piso: '',
+        numero: ''
     });
 
     const manejoDatos = (e) => {
@@ -33,7 +58,7 @@ function Edificios(){
             body: JSON.stringify({codigo: id})
         }
         ).then( () => {
-            alert("Edificio eliminado");
+            alert("Unidad eliminada");
             window.location.reload();
         })
     }
@@ -47,17 +72,13 @@ function Edificios(){
             body: JSON.stringify(form)
         }
         ).then( () => {
-            alert("Edificio creado");
+            alert("Unidad creada");
             window.location.reload();
         })
 
     }
 
-    const unidadesBoton = (e, id) => {
-        e.preventDefault();
-        window.location.href = "/edificios/" + id;
-    }
-
+    
     return(
         <section class="vh-100">
             <div class="container py-5 h-100">
@@ -66,37 +87,36 @@ function Edificios(){
                     <div class="card rounded-3">
                     <div class="card-body p-">
 
-                        <h1 class="text-center my-3 pb-3">Edificios</h1>
+                        <h1 class="text-center my-3 pb-3">{edificio.nombre}, {edificio.direccion}</h1>
 
 
                         <table class="table mb-4">
                         <thead>
                             <tr>
                             <th scope="col">No.</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Dirección</th>
+                            <th scope="col">Piso</th>
+                            <th scope="col">Numero</th>
                             <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            {edificios.map((edificio) => (
+                            {unidades.map((unidad) => (
                                 <tr>
-                                    <th scope="row">{edificio.codigo}</th>
-                                    <td>{edificio.nombre}</td>
-                                    <td>{edificio.direccion}</td>
+                                    <th scope="row">{unidad.id}</th>
+                                    <td>{unidad.piso}</td>
+                                    <td>{unidad.numero}</td>
                                     <td>
-                                        <button type="submit" class="btn btn-danger" onClick={ (e) => eliminarBoton(e, edificio.codigo) }>Elim.</button>
-                                        <button type="submit" class="btn btn-success ms-1">Editar</button>
-                                        <button type="submit" class="btn btn btn-primary ms-1" onClick={ (e) => unidadesBoton(e, edificio.codigo) }>Ver unidades</button>
+                                        <button type="submit" class="btn btn-danger" onClick={ (e) => eliminarBoton(e, unidad.id) }>Borrar</button>
+                                        <button type="submit" class="btn btn-primary ms-1">Detalle</button>
                                     </td>
                                 </tr>
                             ))}
 
                             <tr>        
                                     <th scope="row">#</th>
-                                    <td><input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
-                                    <td><input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" aria-label="Dirección" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
+                                    <td><input type="number" class="form-control" id="nombre" name="piso" placeholder="Piso" aria-label="Piso" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
+                                    <td><input type="number" class="form-control" id="direccion" name="numero" placeholder="Numero" aria-label="Numero" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
                                     <td>
                                         <button type="submit" class="btn btn-success ms-1" onClick={crearBoton}>Crear</button>
                                     </td>
@@ -115,4 +135,5 @@ function Edificios(){
 
 };
 
-export default Edificios;
+
+export default Unidades;
