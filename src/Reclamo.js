@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 
 
-function InicioComponente(){
+function ReclamoComponente(){
 
   //const navigate = useNavigate();
   
@@ -18,41 +18,56 @@ function InicioComponente(){
   //- descripcion
   //- unidad
   //- imagenes (ver)
-
   
   //Se requiere que el ingreso sea mínimo y cerrado. 
   const location = useLocation();
+
   const persona = location.state && location.state.persona;
-
-  const [usuario, setUsuario] = useState({documento:''});
-
-  
+  const [usuario, setUsuario] = useState({documento:persona.documento});
   const [edificio, setEdificio] = useState({codigo:'0'});
-  
-  const [unidad, setUnidad] = useState({piso:'', numero:'', id:'0'}); 
-
-  //ver lo del estado y lo de imagenes
+  const [unidad, setUnidad] = useState({piso:'', numero:''}); 
+  //ver lo de imagenes
   const [reclamo, setReclamo] = useState({usuario:usuario, edificio:edificio, ubicacion:'', descripcion:'', unidad:unidad, estado:'nuevo'});
 
 
+//Manejadores de entrada
 const manejarCambioEntradaPersona= (e) => {
-  //const nuevoValor = e.target.value.toString();
   const u = { ...usuario, [e.target.name]: e.target.value.toString() };
   setUsuario(u);
   setReclamo({ ...reclamo, usuario:u });
-
 };
 
 const manejarCambioEntradaEdificio = (e) => {
     const ed = { ...edificio, [e.target.name]: e.target.value };
     setEdificio(ed);
     setReclamo({ ...reclamo, edificio:ed})
+
+
+    //setUnidad((prevUnidad) => ({ ...prevUnidad, [e.target.name]: valorCodigoUnidad }));
 };
 
-  //ver si existe el edificio
+const manejarCambioEntradaUnidad = (e) => {
+  // Convertir el valor a cadena antes de actualizar el estado
+  const nuevoValor = e.target.value.toString();
+
+  // Actualizar el estado de la unidad
+  setUnidad((prevUnidad) => ({ ...prevUnidad, [e.target.name]: nuevoValor }));
+
+//const valorReclamoUnidad = e.target.name === "codigo" ? parseInt(nuevoValor) : nuevoValor;
+
+  // Actualizar el objeto reclamo con el estado más reciente de la unidad
+  setReclamo((prevReclamo) => ({...prevReclamo, unidad: { ...prevReclamo.unidad, [e.target.name]: nuevoValor }}));
+};
+
+const manejarCambioEntradaReclamo = (e) => {
+  setReclamo({ ...reclamo, [e.target.name]: e.target.value });
+};
+
+
+//buscadores de la entidad existente
   const buscarEdificio = async () => {
     try {
-      const respuesta = await fetch(`http://localhost:8080/edificios/buscar?codigo=${edificio.codigo}`);
+      const respuesta = await fetch(`http://localhost:8080/api/edificios/buscar?codigo=${edificio.codigo}`);
   
       if (respuesta.ok) {
         const edificioEncontrado = await respuesta.json();
@@ -73,32 +88,10 @@ const manejarCambioEntradaEdificio = (e) => {
     }
   };
 
-
-const manejarCambioEntradaUnidad = (e) => {
-  // Convertir el valor a cadena antes de actualizar el estado
-  const nuevoValor = e.target.value.toString();
-
-  // Actualizar el estado de la unidad
-  setUnidad((prevUnidad) => ({ ...prevUnidad, [e.target.name]: nuevoValor }));
-
-  const valorReclamoUnidad = e.target.name === "id" ? parseInt(nuevoValor) : nuevoValor;
-
-  // Actualizar el objeto reclamo con el estado más reciente de la unidad
-  setReclamo((prevReclamo) => ({
-    ...prevReclamo,
-    unidad: { ...prevReclamo.unidad, [e.target.name]: valorReclamoUnidad },
-  }));
-
-
-};
-
-
-
-  //ver si existe la unidad
   const buscarUnidad = async () => {
     try {
-      //console.log( typeof parseInt(edificio.codigo), typeof unidad.piso, typeof unidad.numero);
-      const respuesta = await fetch(`http://localhost:8080/api/unidades/buscar?codigo=${(unidad.id)}&piso=${unidad.piso}&numero=${unidad.numero}`);
+      //console.log( typeof parseInt(edificio.codigo), typeof unidad.piso, typeof unidad.numero, edificio.codigo);
+      const respuesta = await fetch(`http://localhost:8080/api/unidades/buscar?codigo=${(edificio.codigo)}&piso=${unidad.piso}&numero=${unidad.numero}`);
       
       if (respuesta.ok) {
         const unidadEncontrada = await respuesta.json();
@@ -120,9 +113,7 @@ const manejarCambioEntradaUnidad = (e) => {
   };
 
   
-  const manejarCambioEntradaReclamo = (e) => {
-    setReclamo({ ...reclamo, [e.target.name]: e.target.value });
-  };
+
 
   //agregar el reclamo
   const agregarReclamo = async (reclamo) => {
@@ -139,18 +130,19 @@ const manejarCambioEntradaUnidad = (e) => {
 
         });
         if (respuesta.ok) {
-            console.log('Reclamo agregado con exito');
+            alert('Reclamo agregado con exito');
         } else {
-            console.error('Error al agregar reclamo');
+            alert('Parece que no tiene los permisos necesarios.');
         }
         } catch (error) {
-          console.log('Error de red');
+          alert('Error de red');
         }
 };
 
+
+//agregar el reclamo
 async function reclamar(reclamo){
   console.log(reclamo)
-
   try {
     const resultadoBusquedaEdificio = await buscarEdificio();
     const resultadoBusquedaUnidad = await buscarUnidad();
@@ -160,11 +152,10 @@ async function reclamar(reclamo){
     if (resultadoBusquedaEdificio && resultadoBusquedaUnidad) {
       await agregarReclamo(reclamo);
     } else {
-      alert('No se pudo agregar el reclamo.');
+      alert('El edificio o unidad ingresado no existen.');
     }
   } catch (error) {
-    console.error('Error al reclamar:', error);
-    alert('Ocurrió un error al procesar el reclamo.');
+      alert('Ocurrió un error al procesar el reclamo o parece que no tiene los permisos necesarios.');
   }
 };
 
@@ -176,6 +167,23 @@ function enviarFormulario(e) {
   // Lógica para procesar el formulario
   console.log("Formulario enviado, pero la página no se recargará");
 }
+
+
+
+//SOBRE IMAGENES
+const [imagenes, setImagenes] = useState([]);
+
+  const mostrarImagenes = (event) => {
+    const nuevosArchivos = Array.from(event.target.files);
+
+    setImagenes([...imagenes, ...nuevosArchivos]);
+  };
+
+  const eliminarImagen = (index) => {
+    const nuevasImagenes = [...imagenes];
+    nuevasImagenes.splice(index, 1);
+    setImagenes(nuevasImagenes);
+  };
 
 
   return(
@@ -191,22 +199,38 @@ function enviarFormulario(e) {
       </header>
 
       <div className='cuerpo'>
-      
 
-        <h1 className='bienvenido'>¡Haz tu reclamo {persona.nombre}!</h1>
+        <p>Sólo puede hacer el reclamo si es propietario o inquilino de la unidad.</p>
+
+        <h1 className='bienvenido'>¡Haz tu reclamo!</h1>
         <div className='contenedor-datos'>
 
         <form onSubmit={enviarFormulario}>
-            <input className='globo' type='text' placeholder="Documento" name="documento" id='documento' value={usuario.documento} onChange={manejarCambioEntradaPersona} required/>
+            <input className='input-lectura' type='text' placeholder="Documento" name="documento" id='documento' value={usuario.documento} onChange={manejarCambioEntradaPersona} readOnly/>
             <input className='globo' type='text' placeholder="Codigo del Edificio" name="codigo" id='codigo' value={edificio.codigo === '0' ? '' : edificio.codigo} onChange={manejarCambioEntradaEdificio} required/>
             <input className='globo' type='text' placeholder='Ubicacion' name='ubicacion' id='ubicacion' value={reclamo.ubicacion} onChange={manejarCambioEntradaReclamo}  required/>
-            <textarea className='globo' type='text' placeholder='Descripción' name='descripcion' id='descripcion' value={reclamo.descripcion} maxLength='1000' onChange={manejarCambioEntradaReclamo}  required></textarea>
-            <p className='contador-caracteres'>1000 caracteres</p>
 
             
             <input className='globo' type='text' placeholder='Piso' name='piso' id='piso' value={unidad.piso} onChange={manejarCambioEntradaUnidad} required/>
             <input className='globo' type='text' placeholder='Número' name='numero' id='numero' value={unidad.numero} onChange={manejarCambioEntradaUnidad} required/>
-            <input className='globo' type='text' placeholder='Identificador de la unidad' name='id' id='id' value={unidad.id === '0' ? '' : unidad.id}  onChange={manejarCambioEntradaUnidad} required/>
+
+            <textarea className='globo' type='text' placeholder='Descripción' name='descripcion' id='descripcion' value={reclamo.descripcion} maxLength='1000' onChange={manejarCambioEntradaReclamo}  required></textarea>
+            <p className='contador-caracteres'>1000 caracteres</p>
+
+            <input type="file" id="imagenes" name="imagenes" multiple onChange={mostrarImagenes}/>
+            <div id="contenedor-imagenes">
+            {imagenes.map((imagen, index) => (
+              <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                <img
+                  src={URL.createObjectURL(imagen)}
+                  style={{ width: '100px', marginLeft:'50px', marginTop:'20px' }}
+                  alt={`Imagen ${index}`}
+                />
+                <button style={{ width: '100px', marginLeft:'50px', marginTop:'20px' }} onClick={() => eliminarImagen(index)}>Eliminar</button>
+              </div>
+            ))}
+          </div>
+
 
             <button className='globo-boton' type='submit' onClick={ () => { reclamar(reclamo) }}> Enviar Reclamo </button>
         
@@ -224,4 +248,4 @@ function enviarFormulario(e) {
 
 };
 
-export default InicioComponente;
+export default ReclamoComponente;
