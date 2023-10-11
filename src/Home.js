@@ -28,8 +28,10 @@ function HomeComponente(){
                 <nav>
                     <ul>
                         <li><a href="/home">Home</a></li>
-                        <li><a href="https://www.google.com.ar/">Hacer Reclamo</a></li>
-                        <li><a href="https://www.google.com.ar/">Ver Reclamos</a></li>
+                        <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
+                        <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
+                        <li><a  href='https://www.google.com.ar/'>Mi Edificio</a></li>
+                        <li><a  href='https://www.google.com.ar/'>Cerrar Sesión</a></li>
                     </ul>
                 </nav>
             </header>
@@ -38,7 +40,11 @@ function HomeComponente(){
                 <h1 className='bienvenida'>¡Bienvenido/a {persona.nombre}!</h1>
 
                 <p className='parrafo-bienvenida'>
-                Texto presentacion
+                    En nuestro portal, ofrecemos una plataforma fácil y segura para presentar reclamos relacionados 
+                    con edificios. Ya sea problemas con la administración, servicios o mantenimiento, estamos aquí para
+                    escucharte. Simplificamos el proceso de comunicación entre residentes y administradores, asegurando 
+                    un ambiente habitable y armonioso para todos. ¡Tu voz es importante para mantener nuestros hogares en
+                    perfecto estado!
                 </p>
 
 

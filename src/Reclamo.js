@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import './Reclamo.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useLocation } from 'react-router-dom';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 function ReclamoComponente(){
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   
   //Hacer un reclamo: Atributos necesarios:
   //- usuario
@@ -185,22 +185,38 @@ const [imagenes, setImagenes] = useState([]);
     setImagenes(nuevasImagenes);
   };
 
+  //Navegacion
+  //Si toca el boton para Reportar desperfecto en una unidad en particular
+  function ReclamarUnidad(){
+    navigate('/reclamo-unidad', { state: { persona: persona } });
+  }
+
+  //Si toca el boton para Reportar desperfecto en una parte comunitaria
+  function ReclamarComun(){
+      navigate('/reclamo-comun', { state: { persona: persona } });
+  }
+
+  function IrHome(){
+    navigate('/home', { state: { persona: persona } });
+  }
 
   return(
     <div className='PantallaReclamo'>
       <header>
         <nav>
           <ul>
-            <li><a href="https://www.google.com.ar/">Inicio</a></li>
-            <li><a href="https://www.google.com.ar/">Hacer Reclamo</a></li>
-            <li><a href="https://www.google.com.ar/">Ver Reclamos</a></li>
+            <li><a href='/home' onClick={IrHome}>Home</a></li>
+            <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
+            <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
+            <li><a  href='https://www.google.com.ar/'>Mi Edificio</a></li>
+            <li><a  href='https://www.google.com.ar/'>Cerrar Sesión</a></li>
           </ul>
         </nav>
       </header>
 
       <div className='cuerpo'>
 
-        <p>Sólo puede hacer el reclamo si es propietario o inquilino de la unidad.</p>
+        <p>Sólo puede hacer el reclamo si es propietario del edificio o inquilino de la unidad.</p>
 
         <h1 className='bienvenido'>¡Haz tu reclamo!</h1>
         <div className='contenedor-datos'>

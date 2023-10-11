@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 function ReclamoComunComponente(){
 
+    const navigate = useNavigate();
     const location = useLocation();
 
     const persona = location.state && location.state.persona;
@@ -124,15 +125,32 @@ function ReclamoComunComponente(){
     setImagenes(nuevasImagenes);
     };
 
+    //Navegacion
+  //Si toca el boton para Reportar desperfecto en una unidad en particular
+  function ReclamarUnidad(){
+    navigate('/reclamo-unidad', { state: { persona: persona } });
+  }
+
+  //Si toca el boton para Reportar desperfecto en una parte comunitaria
+  function ReclamarComun(){
+      navigate('/reclamo-comun', { state: { persona: persona } });
+  }
+
+  function IrHome(){
+    navigate('/home', { state: { persona: persona } });
+  }
+
     return(
         <div className='PantallaReclamoComun'>
       <header>
         <nav>
-          <ul>
-            <li><a href="https://www.google.com.ar/">Inicio</a></li>
-            <li><a href="https://www.google.com.ar/">Hacer Reclamo</a></li>
-            <li><a href="https://www.google.com.ar/">Ver Reclamos</a></li>
-          </ul>
+            <ul>
+                <li><a href='/home' onClick={IrHome}>Home</a></li>
+                <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
+                <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
+                <li><a  href='https://www.google.com.ar/'>Mi Edificio</a></li>
+                <li><a  href='https://www.google.com.ar/'>Cerrar Sesión</a></li>
+            </ul>
         </nav>
       </header>
 
