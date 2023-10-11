@@ -43,26 +43,6 @@ function LoginAdministradorComponente(){
         }
       };
       
-    
-    //Llama al metodo crearPersona del PersonaController es de tipo POST
-    const manejarRegistro = async (e) => {
-        try {
-            const respuesta = await fetch('http://localhost:8080/api/personas/crear', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(persona),
-            });
-            if (respuesta.ok) {
-                console.log('Usuario registrado con éxito');
-            } else {
-                console.error('Error al registrar usuario');
-            }
-            } catch (error) {
-              console.log('Error de red');
-            }
-    };
 
     //Guarda a la persona con sus datos
     const manejarCambioEntrada = (e) => {
@@ -80,23 +60,6 @@ function LoginAdministradorComponente(){
       else{
         return false
       }
-    }
-
-    async function Registrar(){
-      if (verificarInputs() === true){
-        const resultadoBusqueda = await buscarPersona();
-        console.log(resultadoBusqueda);  // true o false
-        if (resultadoBusqueda === false){
-            manejarRegistro();
-            alert('Registrado con éxito. Puede iniciar sesión')
-        }
-        else{
-            alert('Ya tiene una cuenta existente. Inicie Sesion normalmente')
-        }
-      }
-      else{
-        alert('Complete con sus datos')
-      } 
     }
 
     async function IniciarSesion(){
@@ -134,7 +97,7 @@ function LoginAdministradorComponente(){
                   <input className='globo' type="password" placeholder="Contraseña" name="password" id='password' value={persona.password} onChange={manejarCambioEntrada} required/>
                   <input className='globo' type="text" placeholder="Documento" name="documento" id='documento' value={persona.documento} onChange={manejarCambioEntrada} required/>
                   <button className='globo-boton' type='submit' onClick={() => IniciarSesion(persona)}>Iniciar Sesion </button>
-                  <button className='globo-boton' type='submit' onClick={() => Registrar()}>Registrarse</button>
+                 
                 </form>
                 <img className="imagenRol" src={imagenUsu} alt="ingresar admin" onClick={IngresarUsuario} title="Ingresar Usuario"></img>
             </div>
