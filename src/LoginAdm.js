@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import imagenAdmin from './recursos/adm.png';
+import imagenUsu from './recursos/usu.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 //Iniciar Sesion
 //Registrarse
-function LoginComponente(){
+function LoginAdministradorComponente(){
 
   const navigate = useNavigate();
 
@@ -119,9 +119,8 @@ function LoginComponente(){
     }
 
 
-    function IngresarAdmin(){
-      console.log("askdnkas")
-      navigate('/login-administrador');
+    function IngresarUsuario(){
+      navigate('/login');
     }
         
     return(
@@ -129,7 +128,7 @@ function LoginComponente(){
           {!logeado ? (
             //Usuario no autenticado, muestro el formulario Login
             <div className='contenedor-datos'>
-              <h1 className='bienvenido'>¡Bienvenido/a!</h1>
+              <h1 className='bienvenido'>¡Bienvenido/a admin!</h1>
                 <form>
                   <input className='globo' type="text" placeholder="Nombre" name="nombre" id='nombre' value={persona.nombre} onChange={manejarCambioEntrada} required/>
                   <input className='globo' type="password" placeholder="Contraseña" name="password" id='password' value={persona.password} onChange={manejarCambioEntrada} required/>
@@ -137,17 +136,17 @@ function LoginComponente(){
                   <button className='globo-boton' type='submit' onClick={() => IniciarSesion(persona)}>Iniciar Sesion </button>
                   <button className='globo-boton' type='submit' onClick={() => Registrar()}>Registrarse</button>
                 </form>
-                <img className="imagenRol" src={imagenAdmin} alt="ingresar admin" onClick={IngresarAdmin} title="Ingresar Administración"></img>
-
+                <img className="imagenRol" src={imagenUsu} alt="ingresar admin" onClick={IngresarUsuario} title="Ingresar Usuario"></img>
             </div>
           ) : (
 
             null
             
           )};  
+            
         </div>
     );
 }
 
 
-export default LoginComponente;
+export default LoginAdministradorComponente;
