@@ -140,19 +140,24 @@ function ReclamoComunComponente(){
     navigate('/home', { state: { persona: persona } });
   }
 
+  function MiEdificio(){
+    navigate('/mi-edificio', { state: { persona: persona } });
+  }
+  
+
     return(
         <div className='PantallaReclamoComun'>
-      <header>
-        <nav>
-            <ul>
-                <li><a href='/home' onClick={IrHome}>Home</a></li>
-                <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
-                <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
-                <li><a  href='https://www.google.com.ar/'>Mi Edificio</a></li>
-                <li><a  href='https://www.google.com.ar/'>Cerrar Sesión</a></li>
-            </ul>
-        </nav>
-      </header>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href='/home' onClick={IrHome}>Home</a></li>
+                    <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
+                    <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
+                    <li><a  href='/mi-edificio'onClick={MiEdificio}>Mi Edificio</a></li>
+                    <li><a  href='https://www.google.com.ar/'>Cerrar Sesión</a></li>
+                </ul>
+            </nav>
+        </header>
 
       <div className='cuerpo'>
 

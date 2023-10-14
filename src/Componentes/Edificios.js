@@ -5,7 +5,7 @@ function Edificios(){
 
     const [edificios, setEdificios] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/edificios";
+        const url = "http://localhost:8080/api/edificios";
         fetch(url).then(res => res.json()).then(res => setEdificios(res));
     },[]);
 
@@ -26,7 +26,7 @@ function Edificios(){
 
     const eliminarBoton = (e, id) => {
         e.preventDefault();
-        const url = "http://localhost:8080/edificios/borrar";
+        const url = "http://localhost:8080/api/edificios/borrar";
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -40,7 +40,7 @@ function Edificios(){
 
     const crearBoton = (e) => {
         e.preventDefault();
-        const url = "http://localhost:8080/edificios/crear";
+        const url = "http://localhost:8080/api/edificios/crear";
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -59,17 +59,17 @@ function Edificios(){
     }
 
     return(
-        <section class="vh-100">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-lg-12 col-xl-7">
-                    <div class="card rounded-3">
-                    <div class="card-body p-">
+        <section className="vh-100">
+            <div className="container py-5 h-100">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                <div className="col col-lg-12 col-xl-7">
+                    <div className="card rounded-3">
+                    <div className="card-body p-">
 
-                        <h1 class="text-center my-3 pb-3">Edificios</h1>
+                        <h1 className="text-center my-3 pb-3">Edificios</h1>
 
 
-                        <table class="table mb-4">
+                        <table className="table mb-4">
                         <thead>
                             <tr>
                             <th scope="col">No.</th>
@@ -86,19 +86,19 @@ function Edificios(){
                                     <td>{edificio.nombre}</td>
                                     <td>{edificio.direccion}</td>
                                     <td>
-                                        <button type="submit" class="btn btn-danger" onClick={ (e) => eliminarBoton(e, edificio.codigo) }>Elim.</button>
-                                        <button type="submit" class="btn btn-success ms-1">Editar</button>
-                                        <button type="submit" class="btn btn btn-primary ms-1" onClick={ (e) => unidadesBoton(e, edificio.codigo) }>Ver unidades</button>
+                                        <button type="submit" className="btn btn-danger" onClick={ (e) => eliminarBoton(e, edificio.codigo) }>Elim.</button>
+                                        <button type="submit" className="btn btn-success ms-1">Editar</button>
+                                        <button type="submit" className="btn btn btn-primary ms-1" onClick={ (e) => unidadesBoton(e, edificio.codigo) }>Ver unidades</button>
                                     </td>
                                 </tr>
                             ))}
 
                             <tr>        
                                     <th scope="row">#</th>
-                                    <td><input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
-                                    <td><input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" aria-label="Dirección" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
+                                    <td><input type="text" className="form-control" id="nombre" name="nombre" placeholder="Nombre" aria-label="Nombre" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
+                                    <td><input type="text" className="form-control" id="direccion" name="direccion" placeholder="Dirección" aria-label="Dirección" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
                                     <td>
-                                        <button type="submit" class="btn btn-success ms-1" onClick={crearBoton}>Crear</button>
+                                        <button type="submit" className="btn btn-success ms-1" onClick={crearBoton}>Crear</button>
                                     </td>
                                 </tr>
                 

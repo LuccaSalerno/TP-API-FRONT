@@ -8,14 +8,14 @@ function Unidades(){
 
     const [edificio, setEdificio] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/edificios/" + params.id;
+        const url = "http://localhost:8080/api/edificios/" + params.id;
         fetch(url)
             .then(res => res.json())
             .then(res => {
                 console.log(res.message);
                 if(res.hasOwnProperty('error')){
                     alert(res.message);
-                    window.location.replace("http://localhost:3000/edificios");
+                    window.location.replace("http://localhost:3000/api/edificios");
                 } else {
                     setEdificio(res);
                 }
@@ -25,7 +25,7 @@ function Unidades(){
 
     const [unidades, setUnidades] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/edificios/" + params.id + "/unidades";
+        const url = "http://localhost:8080/api/edificios/" + params.id + "/unidades";
         fetch(url).then(res => res.json()).
             then(res => {
                 setUnidades(res);
@@ -51,7 +51,7 @@ function Unidades(){
 
     const eliminarBoton = (e, id) => {
         e.preventDefault();
-        const url = "http://localhost:8080/edificios/borrar";
+        const url = "http://localhost:8080/api/edificios/borrar";
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -65,7 +65,7 @@ function Unidades(){
 
     const crearBoton = (e) => {
         e.preventDefault();
-        const url = "http://localhost:8080/edificios/crear";
+        const url = "http://localhost:8080/api/edificios/crear";
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -80,17 +80,17 @@ function Unidades(){
 
     
     return(
-        <section class="vh-100">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-lg-12 col-xl-7">
-                    <div class="card rounded-3">
-                    <div class="card-body p-">
+        <section className="vh-100">
+            <div className="container py-5 h-100">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                <div className="col col-lg-12 col-xl-7">
+                    <div className="card rounded-3">
+                    <div className="card-body p-">
 
-                        <h1 class="text-center my-3 pb-3">{edificio.nombre}, {edificio.direccion}</h1>
+                        <h1 className="text-center my-3 pb-3">{edificio.nombre}, {edificio.direccion}</h1>
 
 
-                        <table class="table mb-4">
+                        <table className="table mb-4">
                         <thead>
                             <tr>
                             <th scope="col">No.</th>
@@ -107,18 +107,18 @@ function Unidades(){
                                     <td>{unidad.piso}</td>
                                     <td>{unidad.numero}</td>
                                     <td>
-                                        <button type="submit" class="btn btn-danger" onClick={ (e) => eliminarBoton(e, unidad.id) }>Borrar</button>
-                                        <button type="submit" class="btn btn-primary ms-1">Detalle</button>
+                                        <button type="submit" className="btn btn-danger" onClick={ (e) => eliminarBoton(e, unidad.id) }>Borrar</button>
+                                        <button type="submit" className="btn btn-primary ms-1">Detalle</button>
                                     </td>
                                 </tr>
                             ))}
 
                             <tr>        
                                     <th scope="row">#</th>
-                                    <td><input type="number" class="form-control" id="nombre" name="piso" placeholder="Piso" aria-label="Piso" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
-                                    <td><input type="number" class="form-control" id="direccion" name="numero" placeholder="Numero" aria-label="Numero" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
+                                    <td><input type="number" className="form-control" id="nombre" name="piso" placeholder="Piso" aria-label="Piso" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
+                                    <td><input type="number" className="form-control" id="direccion" name="numero" placeholder="Numero" aria-label="Numero" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
                                     <td>
-                                        <button type="submit" class="btn btn-success ms-1" onClick={crearBoton}>Crear</button>
+                                        <button type="submit" className="btn btn-success ms-1" onClick={crearBoton}>Crear</button>
                                     </td>
                                 </tr>
                 
