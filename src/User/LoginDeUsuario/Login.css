@@ -1,5 +1,5 @@
 .Login{
-    background-image: url('/public/recursos/bgedificios.jpg');
+    background-image: url('../../recursos/bgedificios.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
