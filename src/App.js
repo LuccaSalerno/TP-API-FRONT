@@ -11,6 +11,7 @@ import Unidades from './Componentes/Unidades'
 import MiEdificioComponente from './User/ReclamosDeSuEdificio/MiEdificio';
 import PerfilComponente from './User/PerfilDelUsuario/miPerfil';
 import ModificarPerfilComponente from './User/PerfilDelUsuario/ModificarPerfil';
+import Unidad from './Componentes/Unidad';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Routes>
         <Route exact path='/login' element={<LoginComponente/>} />
         <Route exact path='/login-administrador' element={<LoginAdministradorComponente/>}/>
+
         <Route exact path='/home' element={<HomeComponente/>} />
         <Route exact path='/reclamo-unidad' element={<ReclamoComponente/>} />
         <Route exact path='/reclamo-comun' element={<ReclamoComunComponente/>} />
@@ -27,6 +29,7 @@ function App() {
         <Route exact path='/modificar-perfil' element={<ModificarPerfilComponente />}/>
         <Route exact path='/edificios' element={<Edificios/>} />
         <Route exact path='/edificios/:id' element={<Unidades/>} />
+        <Route exact path='/unidad/:id' element={<Unidad/>} />
       </Routes>
     </Router>
   );

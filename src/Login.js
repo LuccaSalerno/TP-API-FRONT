@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import imagenUsu from './recursos/usu.png';
+import imagenAdmin from './recursos/adm.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 //Iniciar Sesion
 //Registrarse
-function LoginAdministradorComponente(){
+function LoginComponente(){
 
   const navigate = useNavigate();
 
@@ -43,6 +43,26 @@ function LoginAdministradorComponente(){
         }
       };
       
+    
+    //Llama al metodo crearPersona del PersonaController es de tipo POST
+    const manejarRegistro = async (e) => {
+        try {
+            const respuesta = await fetch('http://localhost:8080/api/personas/crear', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(persona),
+            });
+            if (respuesta.ok) {
+                console.log('Usuario registrado con éxito');
+            } else {
+                console.error('Error al registrar usuario');
+            }
+            } catch (error) {
+              console.log('Error de red');
+            }
+    };
 
     //Guarda a la persona con sus datos
     const manejarCambioEntrada = (e) => {
@@ -60,6 +80,23 @@ function LoginAdministradorComponente(){
       else{
         return false
       }
+    }
+
+    async function Registrar(){
+      if (verificarInputs() === true){
+        const resultadoBusqueda = await buscarPersona();
+        console.log(resultadoBusqueda);  // true o false
+        if (resultadoBusqueda === false){
+            manejarRegistro();
+            alert('Registrado con éxito. Puede iniciar sesión')
+        }
+        else{
+            alert('Ya tiene una cuenta existente. Inicie Sesion normalmente')
+        }
+      }
+      else{
+        alert('Complete con sus datos')
+      } 
     }
 
     async function IniciarSesion(){
@@ -82,8 +119,9 @@ function LoginAdministradorComponente(){
     }
 
 
-    function IngresarUsuario(){
-      navigate('/login');
+    function IngresarAdmin(){
+      console.log("askdnkas")
+      navigate('/login-administrador');
     }
         
     return(
@@ -91,25 +129,25 @@ function LoginAdministradorComponente(){
           {!logeado ? (
             //Usuario no autenticado, muestro el formulario Login
             <div className='contenedor-datos'>
-              <h1 className='bienvenido'>¡Bienvenido/a admin!</h1>
+              <h1 className='bienvenido'>¡Bienvenido/a!</h1>
                 <form>
                   <input className='globo' type="text" placeholder="Nombre" name="nombre" id='nombre' value={persona.nombre} onChange={manejarCambioEntrada} required/>
                   <input className='globo' type="password" placeholder="Contraseña" name="password" id='password' value={persona.password} onChange={manejarCambioEntrada} required/>
                   <input className='globo' type="text" placeholder="Documento" name="documento" id='documento' value={persona.documento} onChange={manejarCambioEntrada} required/>
                   <button className='globo-boton' type='submit' onClick={() => IniciarSesion(persona)}>Iniciar Sesion </button>
-                 
+                  <button className='globo-boton' type='submit' onClick={() => Registrar()}>Registrarse</button>
                 </form>
-                <img className="imagenRol" src={imagenUsu} alt="ingresar admin" onClick={IngresarUsuario} title="Ingresar Usuario"></img>
+                <img className="imagenRol" src={imagenAdmin} alt="ingresar admin" onClick={IngresarAdmin} title="Ingresar Administración"></img>
+
             </div>
           ) : (
 
             null
             
           )};  
-            
         </div>
     );
 }
 
 
-export default LoginAdministradorComponente;
+export default LoginComponente;
