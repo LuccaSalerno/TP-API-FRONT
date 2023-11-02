@@ -29,7 +29,7 @@ function App() {
         <Route exact path='/modificar-perfil' element={<ModificarPerfilComponente />}/>
         <Route exact path='/edificios' element={<Edificios/>} />
         <Route exact path='/edificios/:id' element={<Unidades/>} />
-        <Route exact path='/unidad/:id' element={<Unidad/>} />
+        <Route exact path='/unidad/:codigo/:piso/:numero' element={<Unidad/>} />
       </Routes>
     </Router>
   );

@@ -1,12 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect, useState} from 'react';
-import NavBarAdminComponente from '../Admin/navbar/navbar';
 
 function Edificios(){
 
     const [edificios, setEdificios] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/api/edificios";
+        const url = "http://localhost:8080/edificios";
         fetch(url).then(res => res.json()).then(res => setEdificios(res));
     },[]);
 
@@ -27,7 +26,7 @@ function Edificios(){
 
     const eliminarBoton = (e, id) => {
         e.preventDefault();
-        const url = "http://localhost:8080/api/edificios/borrar";
+        const url = "http://localhost:8080/edificios/borrar";
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -41,7 +40,7 @@ function Edificios(){
 
     const crearBoton = (e) => {
         e.preventDefault();
-        const url = "http://localhost:8080/api/edificios/crear";
+        const url = "http://localhost:8080/edificios/crear";
         fetch(url, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -61,7 +60,6 @@ function Edificios(){
 
     return(
         <section className="vh-100">
-            <NavBarAdminComponente/>
             <div className="container py-5 h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                 <div className="col col-lg-12 col-xl-7">
