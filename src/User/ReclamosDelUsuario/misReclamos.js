@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './MiEdificio.css';
-import imagenOOPS from '../recursos/oops.png';
+import imagenOOPS from '../../recursos/oops.png';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import NavBarComponente from '../navbar/navbar';
 
 
 function MiEdificioComponente(){
@@ -59,70 +60,25 @@ function MiEdificioComponente(){
       };
 
 //Quiero obtener todos los reclamos del edificio al que es duenio o habita
-const ObtenerReclamos = async () => {
+const ObtenerReclamosPorPersona = async () => {
     try {
-        const respuesta = await fetch(`http://localhost:8080/api/edificios/reclamos?codigo=${edificio.codigo}`);
+        const respuesta = await fetch(`http://localhost:8080/api/reclamos/persona?documento=${persona.documento}`);
         const datos = await respuesta.json();
         console.log(datos)
-          // Actualiza el estado con el nombre del edificio
-          setReclamos(datos); // Ajusta según la estructura de tu API
-        } catch (error) {
-          console.error('Error al obtener reclamos', error);
-        }
+        setReclamos(datos);
+    } catch (error) {
+        console.error('Error al obtener reclamos', error);
     }
-
-
-
-    
- 
-    //Navegacion
-  //Si toca el boton para Reportar desperfecto en una unidad en particular
-  function ReclamarUnidad(){
-    navigate('/reclamo-unidad', { state: { persona: persona } });
-  }
-
-  //Si toca el boton para Reportar desperfecto en una parte comunitaria
-  function ReclamarComun(){
-      navigate('/reclamo-comun', { state: { persona: persona } });
-  }
-
-  function IrHome(){
-    navigate('/home', { state: { persona: persona } });
-  }
-
-  function MiEdificio(){
-    navigate('/mi-edificio', { state: { persona: persona } });
-  }
-
-
-
-
-
+}
     
     return(
         <div className='PantallaMiEdificio'>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href='/home' onClick={IrHome}>Home</a></li>
-                    <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
-                    <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
-                    <li><a  href='/mi-edificio'onClick={MiEdificio}>Mi Edificio</a></li>
-                    <li><a  href='https://www.google.com.ar/'>Cerrar Sesión</a></li>
-                </ul>
-            </nav>
-        </header>
+        <NavBarComponente/>
 
         <div className='cuerpo'>
             
-            <div className='contenedor-edificio'>
-                <p>Ingrese el codigo de su edificio del que desea ver los reclamos</p>
-                <input className='casilla' type='text' placeholder="Codigo del Edificio" name="codigo" id='codigo' value={edificio.codigo === '0' ? '' : edificio.codigo} onChange={manejarCambioEntradaEdificio} required/>
-                <button className='boton-verificar' type='submit' onClick={() => { VerificarHabilitacion(); ObtenerNombreEdificio(); ObtenerReclamos()}}> ver </button>
-            </div>
-            
 
-            <h2 className='tituloReclamos'>Reclamos</h2>
+            <h2 className='tituloReclamos'>Mis Reclamos</h2>
 
             
             {verificarHabilitacion === null && (
@@ -164,7 +120,7 @@ const ObtenerReclamos = async () => {
             )}
 
             {verificarHabilitacion === false && <div className="ups">
-                <img src={imagenOOPS} alt="OOPS!"/>
+                <img src={imagenOOPS} alt="OOPS!" style={{width:"250px", height:"250px"}}/>
                 <p>Ups, no es dueño ni inquilino de este edificio para visualizar sus reclamos.</p>
                 </div>} 
 

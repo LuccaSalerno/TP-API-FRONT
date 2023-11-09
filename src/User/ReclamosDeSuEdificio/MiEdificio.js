@@ -48,8 +48,9 @@ function MiEdificioComponente(){
 
     //quiero el nombre del edificio
     const ObtenerNombreEdificio = async () => {
+       
         try {
-          const respuesta = await fetch(`http://localhost:8080/api/edificios/buscar?codigo=${edificio.codigo}`);
+          const respuesta = await fetch(`http://localhost:8080/reclamos/edificio?codigo=${edificio.codigo}`);
           const datos = await respuesta.json();
           
           // Actualiza el estado con el nombre del edificio
@@ -61,8 +62,9 @@ function MiEdificioComponente(){
 
 //Quiero obtener todos los reclamos del edificio al que es duenio o habita
 const ObtenerReclamos = async () => {
+    setVerificarHabilitacion(true)
     try {
-        const respuesta = await fetch(`http://localhost:8080/api/edificios/reclamos?codigo=${edificio.codigo}`);
+        const respuesta = await fetch(`http://localhost:8080/reclamos/edificio?codigo=${parseInt(edificio.codigo)}`);
         const datos = await respuesta.json();
         console.log(datos)
           // Actualiza el estado con el nombre del edificio
@@ -81,7 +83,7 @@ const ObtenerReclamos = async () => {
             <div className='contenedor-edificio'>
                 <p>Ingrese el codigo de su edificio del que desea ver los reclamos</p>
                 <input className='casilla' type='text' placeholder="Codigo del Edificio" name="codigo" id='codigo' value={edificio.codigo === '0' ? '' : edificio.codigo} onChange={manejarCambioEntradaEdificio} required/>
-                <button className='boton-verificar' type='submit' onClick={() => { VerificarHabilitacion(); ObtenerNombreEdificio(); ObtenerReclamos()}}> ver </button>
+                <button className='boton-verificar' type='submit' onClick={() => {ObtenerReclamos()}}> ver </button>
             </div>
             
 
