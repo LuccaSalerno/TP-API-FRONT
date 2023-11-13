@@ -15,7 +15,7 @@ function ReclamoComponente(){
   //Se requiere que el ingreso sea mínimo y cerrado. 
   const location = useLocation();
 
-  const persona = location.state && location.state.persona;
+  const usuario = location.state && location.state.usuario;
 
   const [unidad, setUnidad] = useState({piso:'', numero:'', codigoEdificio:'0'})
   //ver lo de imagenes
@@ -129,7 +129,7 @@ const [imagenes, setImagenes] = useState([]);
         <div className='contenedor-datos'>
 
         <form onSubmit={enviarFormulario}>
-            <input className='input-lectura' type='text' placeholder="Documento" name="documento" id='documento' value={persona.documento} onChange={manejarCambioEntradaReclamo} readOnly/>
+            <input className='input-lectura' type='text' placeholder="Documento" name="documento" id='documento' value={usuario.documento} onChange={manejarCambioEntradaReclamo} readOnly/>
             <input className='globo' type='text' placeholder="Codigo del Edificio" name="codigoEdificio" id='codigo' value={reclamo.codigoEdificio === '0' ? '' : reclamo.codigoEdificio } onChange={manejarCambioEntradaUnidad} required/>
             <input className='globo' type='text' placeholder='Ubicacion' name='ubicacion' id='ubicacion' value={reclamo.ubicacion} onChange={manejarCambioEntradaReclamo}  required/>
 

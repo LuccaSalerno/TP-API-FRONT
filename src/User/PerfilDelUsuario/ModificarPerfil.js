@@ -11,7 +11,7 @@ function ModificarPerfilComponente(){
     const navigate = useNavigate();
     const location = useLocation();
 
-    const persona = location.state && location.state.persona;
+    const usuario = location.state && location.state.usuario;
 
     //TODO
     //- hacer metodo para manejar los cambios de entrada 
@@ -24,13 +24,13 @@ function ModificarPerfilComponente(){
                 
                 <div className='datos-usuario'>
                     <h5>Nombre:</h5>
-                    <input className='globo' type="text" placeholder="Nombre" name="nombre" id='nombre' value={persona.nombre} required/>
+                    <input className='globo' type="text" placeholder="Nombre" name="nombre" id='nombre' defaultValue={usuario.nombre} required/>
                     <h5>Numero de Documento:</h5>
-                    <p style={{backgroundColor:"white"}}>{persona.documento}</p>
+                    <p style={{backgroundColor:"white"}}>{usuario.documento}</p>
                     <h5>Mail:</h5>
-                    <input className='globo' type="text" placeholder="Mail" name="mail" id='mail' value={persona.mail} required/>
+                    <input className='globo' type="text" placeholder="Mail" name="mail" id='mail' defaultValue={usuario.mail} required/>
                     <h5>Contraseña:</h5>
-                    <input className='globo' type="password" placeholder="Contraseña" name="password" id='password' value={persona.password} required/>
+                    <input className='globo' type="text" placeholder="Contraseña" name="password" id='password' defaultValue={usuario.password} required/>
                     <br></br>
                     <button className='btn-guardar'>Guardar Cambios</button>
                 </div>

@@ -11,8 +11,8 @@ function ReclamoComunComponente(){
     const navigate = useNavigate();
     const location = useLocation();
 
-    const persona = location.state && location.state.persona;
-    const [usuario, setUsuario] = useState({documento:persona.documento});
+    const usuario = location.state && location.state.usuario;
+    //const [usuario, setUsuario] = useState({documento:persona.documento});
     const [edificio, setEdificio] = useState({codigo:'0'});
     //const [unidad, setUnidad] = useState({piso:'', numero:''}); 
     //ver lo de imagenes
@@ -22,7 +22,7 @@ function ReclamoComunComponente(){
     //Manejadores de entrada
     const manejarCambioEntradaPersona= (e) => {
         const u = { ...usuario, [e.target.name]: e.target.value.toString() };
-        setUsuario(u);
+        //setUsuario(u);
         setReclamo({ ...reclamo, usuario:u });
     };
     

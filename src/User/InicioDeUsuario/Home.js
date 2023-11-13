@@ -10,72 +10,25 @@ function HomeComponente(){
     const navigate = useNavigate();
     const location = useLocation();
 
-    const persona = location.state && location.state.persona;
-
-    //para perfil
-    //const [estaUsuario, setEstaUsuario] = useState(false);
-    //const [usuario, setUsuario] = useState({documento:'', nombre:'', contrasenia:'', mail:''});
-
-
-
-    /*
-    const obtenerPersona = async () => {
-        try {
-          const respuesta = await fetch(`http://localhost:8080/api/personas/${persona.documento}`, {
-            method: 'GET',
-          });
-          if (respuesta.ok) {
-            console.log('Se encontró el usuario');
-            const datosUsuario = await respuesta.json();
-            setUsuario({
-              ...usuario,
-              documento: datosUsuario.documento,
-              nombre: datosUsuario.nombre,
-              contrasenia: datosUsuario.contrasenia,
-              mail: datosUsuario.mail
-            });
-            //console.log(usuario)
-            return true;
-          } else {
-            console.error('Error al encontrar usuario');
-            return false;
-          }
-        } catch (error) {
-          console.log('Error de red', error);
-          return false;
-        }
-      };
-
-      useEffect(() => {
-        const cargarUsuario = async () => {
-          const resultado = await obtenerPersona();
-          if (resultado) {
-           setEstaUsuario(true)
-          }
-        };
-          cargarUsuario();
-        
-      }, []);
-    
-*/
+    const usuario = location.state && location.state.usuario;
      
 
     //Si toca el boton para Reportar desperfecto en una unidad en particular
     function ReclamarUnidad(){
-        navigate('/reclamo-unidad', { state: { persona: persona } });
+        navigate('/reclamo-unidad', { state: { usuario: usuario } });
     }
 
     //Si toca el boton para Reportar desperfecto en una parte comunitaria
     function ReclamarComun(){
-        navigate('/reclamo-comun', { state: { persona: persona } });
+        navigate('/reclamo-comun', { state: { usuario: usuario } });
     }
 
     return(
         <div className='Home'>
             <NavBarComponente/>
             <div>
-            
-                <h1 className='bienvenida'>¡Bienvenido/a! {persona.documento}</h1>
+                {console.log(usuario)}
+                <h1 className='bienvenida'>¡Bienvenido/a! {usuario.nombre}</h1>
 
                 <p className='parrafo-bienvenida'>
                     En nuestro portal, ofrecemos una plataforma fácil y segura para presentar reclamos relacionados 
