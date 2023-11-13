@@ -12,40 +12,16 @@ function ReclamoComponente(){
 
   const navigate = useNavigate();
   
-  //Hacer un reclamo: Atributos necesarios:
-  //- usuario
-  //- edificio
-  //- ubicacion
-  //- descripcion
-  //- unidad
-  //- imagenes (ver)
-  
   //Se requiere que el ingreso sea mínimo y cerrado. 
   const location = useLocation();
 
   const persona = location.state && location.state.persona;
-  const [usuario, setUsuario] = useState({documento:persona.documento});
-  const [edificio, setEdificio] = useState({codigo:'0'});
-  const [unidad, setUnidad] = useState({piso:'', numero:''}); 
+
+  const [unidad, setUnidad] = useState({piso:'', numero:'', codigoEdificio:'0'})
   //ver lo de imagenes
-  const [reclamo, setReclamo] = useState({usuario:usuario, edificio:edificio, ubicacion:'', descripcion:'', unidad:unidad, estado:'nuevo'});
+  const [reclamo, setReclamo] = useState({documento:'', codigoEdificio:'0', ubicacion:'', descripcion:'', unidad:unidad, estado:'nuevo'});
 
 
-//Manejadores de entrada
-const manejarCambioEntradaPersona= (e) => {
-  const u = { ...usuario, [e.target.name]: e.target.value.toString() };
-  setUsuario(u);
-  setReclamo({ ...reclamo, usuario:u });
-};
-
-const manejarCambioEntradaEdificio = (e) => {
-    const ed = { ...edificio, [e.target.name]: e.target.value };
-    setEdificio(ed);
-    setReclamo({ ...reclamo, edificio:ed})
-
-
-    //setUnidad((prevUnidad) => ({ ...prevUnidad, [e.target.name]: valorCodigoUnidad }));
-};
 
 const manejarCambioEntradaUnidad = (e) => {
   // Convertir el valor a cadena antes de actualizar el estado
@@ -64,70 +40,22 @@ const manejarCambioEntradaReclamo = (e) => {
   setReclamo({ ...reclamo, [e.target.name]: e.target.value });
 };
 
-
-//buscadores de la entidad existente
-  const buscarEdificio = async () => {
-    try {
-      const respuesta = await fetch(`http://localhost:8080/api/edificios/buscar?codigo=${edificio.codigo}`);
-  
-      if (respuesta.ok) {
-        const edificioEncontrado = await respuesta.json();
-        if (edificioEncontrado) {
-          console.log('Edificio existe');
-          return true; 
-        } else {
-          console.log('Edificio no existe');
-          return false;
-        }
-      } else {
-        console.log('Respuesta no existosa');
-        return false; 
-      }
-    } catch (error) {
-      console.log('Error al buscar el edificio o no se encuentra registrado');
-      return false; 
-    }
-  };
-
-  const buscarUnidad = async () => {
-    try {
-      //console.log( typeof parseInt(edificio.codigo), typeof unidad.piso, typeof unidad.numero, edificio.codigo);
-      const respuesta = await fetch(`http://localhost:8080/api/unidades/buscar?codigo=${(edificio.codigo)}&piso=${unidad.piso}&numero=${unidad.numero}`);
-      
-      if (respuesta.ok) {
-        const unidadEncontrada = await respuesta.json();
-        if (unidadEncontrada) {
-          console.log('Unidad existe');
-          return true; 
-        } else {
-          console.log('Unidad no existe');
-          return false;
-        }
-      } else {
-        console.log('Respuesta no existosa');
-        return false; 
-      }
-    } catch (error) {
-      console.log('Error al buscar el unidad o no se encuentra registrado');
-      return false; 
-    }
-  };
-
   
 
 
   //agregar el reclamo
   const agregarReclamo = async (reclamo) => {
+    console.log(reclamo)
     try {
         console.log("ENTRO")
-        const respuesta = await fetch('http://localhost:8080/api/reclamos/agregar', {
+        const respuesta = await fetch('http://localhost:8080/reclamos', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(
+          body: JSON.stringify((
             reclamo
-        ),
+          )),
 
         });
         if (respuesta.ok) {
@@ -141,6 +69,7 @@ const manejarCambioEntradaReclamo = (e) => {
 };
 
 
+/*
 //agregar el reclamo
 async function reclamar(reclamo){
   console.log(reclamo)
@@ -159,6 +88,7 @@ async function reclamar(reclamo){
       alert('Ocurrió un error al procesar el reclamo o parece que no tiene los permisos necesarios.');
   }
 };
+*/
 
 
 function enviarFormulario(e) {
@@ -199,8 +129,8 @@ const [imagenes, setImagenes] = useState([]);
         <div className='contenedor-datos'>
 
         <form onSubmit={enviarFormulario}>
-            <input className='input-lectura' type='text' placeholder="Documento" name="documento" id='documento' value={usuario.documento} onChange={manejarCambioEntradaPersona} readOnly/>
-            <input className='globo' type='text' placeholder="Codigo del Edificio" name="codigo" id='codigo' value={edificio.codigo === '0' ? '' : edificio.codigo} onChange={manejarCambioEntradaEdificio} required/>
+            <input className='input-lectura' type='text' placeholder="Documento" name="documento" id='documento' value={persona.documento} onChange={manejarCambioEntradaReclamo} readOnly/>
+            <input className='globo' type='text' placeholder="Codigo del Edificio" name="codigoEdificio" id='codigo' value={reclamo.codigoEdificio === '0' ? '' : reclamo.codigoEdificio } onChange={manejarCambioEntradaUnidad} required/>
             <input className='globo' type='text' placeholder='Ubicacion' name='ubicacion' id='ubicacion' value={reclamo.ubicacion} onChange={manejarCambioEntradaReclamo}  required/>
 
             
@@ -225,7 +155,7 @@ const [imagenes, setImagenes] = useState([]);
           </div>
 
 
-            <button className='globo-boton' type='submit' onClick={ () => { reclamar(reclamo) }}> Enviar Reclamo </button>
+            <button className='globo-boton' type='submit' onClick={ () => { agregarReclamo(reclamo) }}> Enviar Reclamo </button>
         
           </form>
 

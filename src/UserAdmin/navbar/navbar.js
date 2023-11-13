@@ -8,28 +8,28 @@ function NavBarAdminComponente(){
     const navigate = useNavigate();
     const location = useLocation();
 
-    const persona = location.state && location.state.persona;
+    const usuario = location.state && location.state.usuario;
 
     //Si toca el boton para Reportar desperfecto en una unidad en particular
     function ReclamarUnidad(){
-        navigate('/reclamo-unidad', { state: { persona: persona } });
+        navigate('/reclamo-unidad', { state: { usuario: usuario } });
     }
 
     //Si toca el boton para Reportar desperfecto en una parte comunitaria
     function ReclamarComun(){
-        navigate('/reclamo-comun', { state: { persona: persona } });
+        navigate('/reclamo-comun', { state: { usuario: usuario } });
     }
 
     function IrHome(){
-        navigate('/home', { state: { persona: persona } });
+        navigate('/home', { state: { usuario: usuario } });
     }
 
     function ListadoEdificios(){
-        navigate('/edificios', { state: { persona: persona } });
+        navigate('/edificios', { state: { usuario: usuario } });
       }
 
     function Perfil(){
-        navigate('/perfil', {state : {persona: persona}})
+        navigate('/perfil', {state : {usuario: usuario}})
     }
 
     return(

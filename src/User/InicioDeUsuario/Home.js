@@ -12,18 +12,29 @@ function HomeComponente(){
 
     const persona = location.state && location.state.persona;
 
-    const [usuario, setUsuario] = useState({documento:'', nombre:'', contrasenia:'', mail:''});
+    //para perfil
+    //const [estaUsuario, setEstaUsuario] = useState(false);
+    //const [usuario, setUsuario] = useState({documento:'', nombre:'', contrasenia:'', mail:''});
 
 
+
+    /*
     const obtenerPersona = async () => {
         try {
-          const respuesta = await fetch(`http://localhost:8080/personas/${persona.documento}`, {
+          const respuesta = await fetch(`http://localhost:8080/api/personas/${persona.documento}`, {
             method: 'GET',
           });
           if (respuesta.ok) {
             console.log('Se encontró el usuario');
             const datosUsuario = await respuesta.json();
-            setUsuario(datosUsuario);
+            setUsuario({
+              ...usuario,
+              documento: datosUsuario.documento,
+              nombre: datosUsuario.nombre,
+              contrasenia: datosUsuario.contrasenia,
+              mail: datosUsuario.mail
+            });
+            //console.log(usuario)
             return true;
           } else {
             console.error('Error al encontrar usuario');
@@ -36,9 +47,17 @@ function HomeComponente(){
       };
 
       useEffect(() => {
-        obtenerPersona();
+        const cargarUsuario = async () => {
+          const resultado = await obtenerPersona();
+          if (resultado) {
+           setEstaUsuario(true)
+          }
+        };
+          cargarUsuario();
+        
       }, []);
-
+    
+*/
      
 
     //Si toca el boton para Reportar desperfecto en una unidad en particular
@@ -56,7 +75,7 @@ function HomeComponente(){
             <NavBarComponente/>
             <div>
             
-                <h1 className='bienvenida'>¡Bienvenido/a {usuario.nombre}!</h1>
+                <h1 className='bienvenida'>¡Bienvenido/a! {persona.documento}</h1>
 
                 <p className='parrafo-bienvenida'>
                     En nuestro portal, ofrecemos una plataforma fácil y segura para presentar reclamos relacionados 
