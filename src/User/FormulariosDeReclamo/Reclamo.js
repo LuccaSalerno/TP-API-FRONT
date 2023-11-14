@@ -17,24 +17,27 @@ function ReclamoComponente(){
 
   const usuario = location.state && location.state.usuario;
 
-  const [unidad, setUnidad] = useState({piso:'', numero:'', codigoEdificio:'0'})
+  const [unidad, setUnidad] = useState({piso:'', numero:'', codigoEdificio:''})
   //ver lo de imagenes
-  const [reclamo, setReclamo] = useState({documento:'', codigoEdificio:'0', ubicacion:'', descripcion:'', unidad:unidad, estado:'nuevo'});
+  const [reclamo, setReclamo] = useState({documento:usuario.documento, codigoEdificio:'', ubicacion:'', descripcion:'', unidad:unidad, estado:'nuevo'});
 
 
 
-const manejarCambioEntradaUnidad = (e) => {
-  // Convertir el valor a cadena antes de actualizar el estado
-  const nuevoValor = e.target.value.toString();
-
-  // Actualizar el estado de la unidad
-  setUnidad((prevUnidad) => ({ ...prevUnidad, [e.target.name]: nuevoValor }));
-
-//const valorReclamoUnidad = e.target.name === "codigo" ? parseInt(nuevoValor) : nuevoValor;
-
-  // Actualizar el objeto reclamo con el estado más reciente de la unidad
-  setReclamo((prevReclamo) => ({...prevReclamo, unidad: { ...prevReclamo.unidad, [e.target.name]: nuevoValor }}));
-};
+  const manejarCambioEntradaUnidad = (e) => {
+    const nuevoValor = e.target.value;
+  
+    // Convierte codigoEdificio a un número antes de actualizar el estado
+    const valorReclamoUnidad = e.target.name === "codigoEdificio" ? parseInt(nuevoValor, 10) : nuevoValor;
+    console.log(valorReclamoUnidad)
+    setUnidad((prevUnidad) => ({ ...prevUnidad, [e.target.name]: valorReclamoUnidad }));
+  
+    // Actualiza el objeto reclamo con el estado más reciente de la unidad (teng que tener la unidad en reclamo y el codigoEdificio)
+    setReclamo((prevReclamo) => ({
+      ...prevReclamo,
+      unidad: { ...prevReclamo.unidad, [e.target.name]: valorReclamoUnidad },
+      codigoEdificio: valorReclamoUnidad // Asigna el valor también a codigoEdificio del reclamo
+    })); 
+  };
 
 const manejarCambioEntradaReclamo = (e) => {
   setReclamo({ ...reclamo, [e.target.name]: e.target.value });
@@ -48,7 +51,7 @@ const manejarCambioEntradaReclamo = (e) => {
     console.log(reclamo)
     try {
         console.log("ENTRO")
-        const respuesta = await fetch('http://localhost:8080/reclamos', {
+        const respuesta = await fetch('http://localhost:8080/api/reclamos', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -61,34 +64,12 @@ const manejarCambioEntradaReclamo = (e) => {
         if (respuesta.ok) {
             alert('Reclamo agregado con exito');
         } else {
-            alert('Parece que no tiene los permisos necesarios.');
+            alert('No se pudo agregar e reclamo.');
         }
         } catch (error) {
           alert('Error de red');
         }
 };
-
-
-/*
-//agregar el reclamo
-async function reclamar(reclamo){
-  console.log(reclamo)
-  try {
-    const resultadoBusquedaEdificio = await buscarEdificio();
-    const resultadoBusquedaUnidad = await buscarUnidad();
-
-    console.log(resultadoBusquedaEdificio, resultadoBusquedaUnidad);
-
-    if (resultadoBusquedaEdificio && resultadoBusquedaUnidad) {
-      await agregarReclamo(reclamo);
-    } else {
-      alert('El edificio o unidad ingresado no existen.');
-    }
-  } catch (error) {
-      alert('Ocurrió un error al procesar el reclamo o parece que no tiene los permisos necesarios.');
-  }
-};
-*/
 
 
 function enviarFormulario(e) {
@@ -130,7 +111,7 @@ const [imagenes, setImagenes] = useState([]);
 
         <form onSubmit={enviarFormulario}>
             <input className='input-lectura' type='text' placeholder="Documento" name="documento" id='documento' value={usuario.documento} onChange={manejarCambioEntradaReclamo} readOnly/>
-            <input className='globo' type='text' placeholder="Codigo del Edificio" name="codigoEdificio" id='codigo' value={reclamo.codigoEdificio === '0' ? '' : reclamo.codigoEdificio } onChange={manejarCambioEntradaUnidad} required/>
+            <input className='globo' type='text' placeholder="Codigo del Edificio" name="codigoEdificio" id='codigoEdificio' value={unidad.codigoEdificio} onChange={manejarCambioEntradaUnidad} required/>
             <input className='globo' type='text' placeholder='Ubicacion' name='ubicacion' id='ubicacion' value={reclamo.ubicacion} onChange={manejarCambioEntradaReclamo}  required/>
 
             
