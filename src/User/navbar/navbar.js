@@ -28,9 +28,14 @@ function NavBarComponente(){
         navigate('/mi-edificio', { state: { usuario: usuario } });
       }
 
+    function MisReclamos(){
+        navigate('/mis-reclamos', {state : {usuario: usuario}})
+    }
+
     function Perfil(){
         navigate('/perfil', {state : {usuario: usuario}})
     }
+
 
     return(
         <div className='Home'>
@@ -41,6 +46,7 @@ function NavBarComponente(){
                         <li><a href='/reclamo-unidad' onClick={ReclamarUnidad}>Reclamar Unidad</a></li>
                         <li><a  href='/reclamo-comun' onClick={ReclamarComun}>Reclamar Sector Comun</a></li>
                         <li><a  href='/mi-edificio'onClick={MiEdificio}>Mi Edificio</a></li>
+                        <li><a href='/mis-reclamos' onClick={MisReclamos}>Mis Reclamos</a></li>
                         <li><a  href='/perfil'onClick={Perfil}>Perfil</a></li>
                         <li><a  href='/login'>Cerrar Sesión</a></li>
                     </ul>

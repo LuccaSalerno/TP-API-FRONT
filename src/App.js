@@ -12,6 +12,7 @@ import MiEdificioComponente from './User/ReclamosDeSuEdificio/MiEdificio';
 import PerfilComponente from './User/PerfilDelUsuario/miPerfil';
 import ModificarPerfilComponente from './User/PerfilDelUsuario/ModificarPerfil';
 import Unidad from './Componentes/Unidad';
+import MisReclamosComponente from './User/ReclamosDelUsuario/misReclamos';
 
 
 function App() {
@@ -25,8 +26,10 @@ function App() {
         <Route exact path='/reclamo-unidad' element={<ReclamoComponente/>} />
         <Route exact path='/reclamo-comun' element={<ReclamoComunComponente/>} />
         <Route exact path='/mi-edificio' element={<MiEdificioComponente/>} />
+        <Route exact path='/mis-reclamos' element={<MisReclamosComponente/>} />
         <Route exact path='/perfil' element={<PerfilComponente />}/>
         <Route exact path='/modificar-perfil' element={<ModificarPerfilComponente />}/>
+
         <Route exact path='/edificios' element={<Edificios/>} />
         <Route exact path='/edificios/:id' element={<Unidades/>} />
         <Route exact path='/unidad/:id' element={<Unidad/>} />

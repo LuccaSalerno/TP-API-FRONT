@@ -11,11 +11,46 @@ function ModificarPerfilComponente(){
     const navigate = useNavigate();
     const location = useLocation();
 
-    const usuario = location.state && location.state.usuario;
 
+    const [usuario, setUsuario] = useState(location.state && location.state.usuario);
+
+    const [usuarioModificado, setUsuarioModificado] = useState({documento:usuario.documento, mail:'', password:'', nombre:''})
+
+    const manejarEntradaUsuarioModificado = (e) =>{
+        setUsuarioModificado({...usuarioModificado, [e.target.name]: e.target.value})
+    }
     //TODO
     //- hacer metodo para manejar los cambios de entrada 
     //- llamar a la api para modificar persona
+
+    const modificarPerfil = async () => {
+        try {
+            console.log("ENTRO")
+            const respuesta = await fetch(`http://localhost:8080/api/personas/${usuario.documento}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify((
+                usuarioModificado
+              )),
+    
+            });
+            if (respuesta.ok) {
+                irMiPerfil()
+                alert('Perfil actualizado con exito');
+            } else {
+                alert('No se pudo actualizar su perfil.');
+            }
+            } catch (error) {
+              alert('Error de red');
+            }
+    };
+
+
+function irMiPerfil(){
+    navigate('/perfil', {state: {usuario : usuarioModificado}})
+}
 
     return(
         <div className='Home'>
@@ -23,18 +58,17 @@ function ModificarPerfilComponente(){
             <div>
                 
                 <div className='datos-usuario'>
-                    <h5>Nombre:</h5>
-                    <input className='globo' type="text" placeholder="Nombre" name="nombre" id='nombre' defaultValue={usuario.nombre} required/>
+                    <h5>Nombre actual: {usuario.nombre}</h5>
+                    <input className='globo' type="text" placeholder="Nombre" name="nombre" id='nombre' value={usuarioModificado.nombre} onChange={manejarEntradaUsuarioModificado} />
                     <h5>Numero de Documento:</h5>
                     <p style={{backgroundColor:"white"}}>{usuario.documento}</p>
-                    <h5>Mail:</h5>
-                    <input className='globo' type="text" placeholder="Mail" name="mail" id='mail' defaultValue={usuario.mail} required/>
-                    <h5>Contraseña:</h5>
-                    <input className='globo' type="text" placeholder="Contraseña" name="password" id='password' defaultValue={usuario.password} required/>
+                    <h5>Mail actual:  {usuario.mail}</h5> <h6></h6>
+                    <input className='globo' type="text" placeholder="Mail" name="mail" id='mail' value={usuarioModificado.mail} onChange={manejarEntradaUsuarioModificado}/>
+                    <h5>Contraseña actual: {usuario.password}</h5>
+                    <input className='globo' type="text" placeholder="Constraseña" name="password" id='password' value={usuarioModificado.password} onChange={manejarEntradaUsuarioModificado} />
                     <br></br>
-                    <button className='btn-guardar'>Guardar Cambios</button>
+                    <button className='btn-guardar' onClick={() => {modificarPerfil()}}>Guardar Cambios</button>
                 </div>
-                
             </div>
         </div>
     );

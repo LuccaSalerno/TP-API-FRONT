@@ -64,7 +64,7 @@ const manejarCambioEntradaReclamo = (e) => {
         if (respuesta.ok) {
             alert('Reclamo agregado con exito');
         } else {
-            alert('No se pudo agregar e reclamo.');
+            alert('No se pudo agregar el reclamo, puede que no tenga los permisos necesarios.');
         }
         } catch (error) {
           alert('Error de red');
