@@ -8,14 +8,15 @@ function Unidades(){
 
     const [edificio, setEdificio] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/api/edificios/" + params.id;
+        console.log(params.id + " PARAMS");
+        const url = "http://localhost:8080/edificios/" + params.id;
         fetch(url)
             .then(res => res.json())
             .then(res => {
                 console.log(res.message);
                 if(res.hasOwnProperty('error')){
                     alert(res.message);
-                    window.location.replace("http://localhost:3000/api/edificios");
+                    window.location.replace("http://localhost:3000/edificios");
                 } else {
                     setEdificio(res);
                 }
@@ -25,7 +26,7 @@ function Unidades(){
 
     const [unidades, setUnidades] = useState([]);
     useEffect(() => {
-        const url = "http://localhost:8080/api/edificios/" + params.id + "/unidades";
+        const url = "http://localhost:8080/edificios/" + params.id + "/unidades";
         fetch(url).then(res => res.json()).
             then(res => {
                 setUnidades(res);
@@ -93,7 +94,6 @@ function Unidades(){
                         <table className="table mb-4">
                         <thead>
                             <tr>
-                            <th scope="col">No.</th>
                             <th scope="col">Piso</th>
                             <th scope="col">Numero</th>
                             <th scope="col">Acciones</th>
@@ -103,7 +103,6 @@ function Unidades(){
 
                             {unidades.map((unidad) => (
                                 <tr>
-                                    <th scope="row">{unidad.id}</th>
                                     <td>{unidad.piso}</td>
                                     <td>{unidad.numero}</td>
                                     <td>
@@ -114,7 +113,7 @@ function Unidades(){
                             ))}
 
                             <tr>        
-                                    <th scope="row">#</th>
+
                                     <td><input type="number" className="form-control" id="nombre" name="piso" placeholder="Piso" aria-label="Piso" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
                                     <td><input type="number" className="form-control" id="direccion" name="numero" placeholder="Numero" aria-label="Numero" aria-describedby="basic-addon2" onChange={manejoDatos}/></td>
                                     <td>
